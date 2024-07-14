@@ -10,33 +10,33 @@ namespace LibraryManagementSystem.Backend.Models
         public int ID { get; set; }
         public int UserID { get; set; }
         public string TokenValue { get; private set; }
+        public DateTime Expiration { get; set; }
 
-        public Token(string secretKey, string issuer, string audience)  
-        { 
-            this.TokenValue = GenerateJwtToken(secretKey, issuer, audience);
-        }
 
-        private string GenerateJwtToken(string secretKey, string issuer, string audience)
+        public Token() { }
+
+        public void GenerateToken(string secretKey, string issuer, string audience, User user)
         {
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey);
 
-            byte[] key = Encoding.UTF8.GetBytes(secretKey);
-
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, this.UserID.ToString()),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(12),
                 Issuer = issuer,
                 Audience = audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            TokenValue = tokenHandler.WriteToken(token);
+            Expiration = token.ValidTo;
         }
 
     }

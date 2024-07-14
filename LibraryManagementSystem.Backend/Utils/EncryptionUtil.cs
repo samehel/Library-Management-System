@@ -5,8 +5,17 @@ namespace LibraryManagementSystem.Backend.Utils
 {
     public static class EncryptionUtil
     {
-        private static readonly byte[] _key = Encoding.UTF8.GetBytes("v)rEkkb&a48C9je6P5STWF8B7zLtTgy4G7rYpvcaeQqhcJ*Kb^r$5SSx@taySL+&");
-        private static readonly byte[] _iv = Encoding.UTF8.GetBytes("*qsV^I5nKbT(BM&uN)fT(XBNSzZfM3pXIhNBy63I%B23rcfbQBbkHGZpkWkWd6HJ");
+        private static readonly byte[] _key;
+        private static readonly byte[] _iv;
+
+        static EncryptionUtil()
+        {
+            using (var deriveBytes = new Rfc2898DeriveBytes("axvY%4!H7bEAg9Yqpp(u6y&24LgM29DgM!d4yvL+@td$P$+Rv&TuS*!q4+!mjFIj", 16))
+            {
+                _key = deriveBytes.GetBytes(16);
+                _iv = deriveBytes.GetBytes(16);
+            }
+        }
 
         public static string Encrypt(string password)
         {

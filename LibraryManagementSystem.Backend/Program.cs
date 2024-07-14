@@ -1,5 +1,6 @@
 
 using LibraryManagementSystem.Backend.Contexts;
+using LibraryManagementSystem.Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +17,9 @@ namespace LibraryManagementSystem.Backend
             // Add services to the container.
             builder.Services.AddDbContext<LibraryContext>(opt =>
                 opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();
