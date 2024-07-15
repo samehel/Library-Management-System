@@ -21,6 +21,7 @@
         RETURN_BOOK,
         LOGIN,
         LOGOUT,
-        REGISTER
+        REGISTER,
+        GET_ALL_USERS
     }
 }

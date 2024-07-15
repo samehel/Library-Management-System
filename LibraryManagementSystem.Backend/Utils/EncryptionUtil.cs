@@ -5,17 +5,8 @@ namespace LibraryManagementSystem.Backend.Utils
 {
     public static class EncryptionUtil
     {
-        private static readonly byte[] _key;
-        private static readonly byte[] _iv;
-
-        static EncryptionUtil()
-        {
-            using (var deriveBytes = new Rfc2898DeriveBytes("axvY%4!H7bEAg9Yqpp(u6y&24LgM29DgM!d4yvL+@td$P$+Rv&TuS*!q4+!mjFIj", 16))
-            {
-                _key = deriveBytes.GetBytes(16);
-                _iv = deriveBytes.GetBytes(16);
-            }
-        }
+        private static readonly byte[] _key = Encoding.UTF8.GetBytes("v*JWgusYV6F)5#Wq");
+        private static readonly byte[] _iv = Encoding.UTF8.GetBytes("Ty!4@Gv(Y9@FY9@");
 
         public static string Encrypt(string password)
         {

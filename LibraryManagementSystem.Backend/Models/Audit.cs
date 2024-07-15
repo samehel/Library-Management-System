@@ -6,8 +6,9 @@ namespace LibraryManagementSystem.Backend.Models
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public ActionType ActionType { get; set; }
+        public ActionType? ActionType { get; set; }
         public DateTime ActionDate => DateTime.Now;
-        public string Details { get; set; }
+        public string? Details { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

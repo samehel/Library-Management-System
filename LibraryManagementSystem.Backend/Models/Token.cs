@@ -9,7 +9,7 @@ namespace LibraryManagementSystem.Backend.Models
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public string TokenValue { get; private set; }
+        public string? TokenValue { get; private set; }
         public DateTime Expiration { get; set; }
 
 
@@ -24,6 +24,7 @@ namespace LibraryManagementSystem.Backend.Models
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, user.Role)

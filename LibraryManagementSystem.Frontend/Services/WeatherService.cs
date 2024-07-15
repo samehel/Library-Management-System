@@ -9,21 +9,18 @@ using System.Threading.Tasks;
 
 namespace LibraryManagementSystem.Frontend.Services
 {
-    public class WeatherService
+    public class WeatherService : ServiceBase
     {
-        private readonly HttpClient _httpClient;
-
-        public WeatherService(HttpClient httpClient)
+        public WeatherService(HttpClient httpClient) : base(httpClient)
         {
-            this._httpClient = httpClient;
-            this._httpClient.BaseAddress = new Uri("http://localhost:5109");
         }
 
         public async Task<IEnumerable<WeatherForecast>> GetWeatherForecastsAsync()
         {
             try
             {
-                return await this._httpClient.GetFromJsonAsync<IEnumerable<WeatherForecast>>("WeatherForecast");
+                var res = await this._httpClient.GetFromJsonAsync<IEnumerable<WeatherForecast>>("WeatherForecast");
+                return res;
             }
             catch (Exception ex)
             {

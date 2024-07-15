@@ -13,9 +13,9 @@ namespace LibraryManagementSystem.Backend.Services
         public TokenService(LibraryContext context, IConfiguration configuration)
         {
             this._context = context;
-            this._secretKey = configuration["Jwt:Key"];
-            this._issuer = configuration["Jwt:Issuer"];
-            this._audience = configuration["Jwt:Issuer"];
+            this._secretKey = configuration["Jwt:Key"]!;
+            this._issuer = configuration["Jwt:Issuer"]!;
+            this._audience = configuration["Jwt:Audience"]!;
         }
 
         public async Task<Token> CreateTokenAsync(User user)

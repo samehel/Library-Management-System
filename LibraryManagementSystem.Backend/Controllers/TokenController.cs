@@ -21,7 +21,7 @@ namespace LibraryManagementSystem.Backend.Controllers
         [HttpPost("authenticate")]
         public async Task<ActionResult<Token>> Authenticate([FromBody] UserLoginDTO userLogin)
         {
-            User user = await this._userService.AuthenticateAsync(userLogin.Username, userLogin.Password);
+            User? user = await this._userService.AuthenticateAsync(userLogin.Username, userLogin.Password);
 
             if (user == null)
                 return Unauthorized();

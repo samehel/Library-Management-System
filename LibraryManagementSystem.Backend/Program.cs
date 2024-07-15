@@ -4,6 +4,8 @@ using LibraryManagementSystem.Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
 
 namespace LibraryManagementSystem.Backend
@@ -20,9 +22,38 @@ namespace LibraryManagementSystem.Backend
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IAuditService, AuditService>();
 
             builder.Services.AddControllers();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
+            });
 
             ConfigureAuthentication(builder);
 
@@ -45,8 +76,29 @@ namespace LibraryManagementSystem.Backend
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                        ValidAudience = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                    };
+
+                    opt.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                            if (claimsIdentity != null)
+                            {
+                                var roles = claimsIdentity.FindAll(ClaimTypes.Role).Select(c => c.Value);
+                                var roleClaims = new List<Claim>();
+                                foreach(var role in roles)
+                                {
+                                    roleClaims.Add(new Claim(ClaimTypes.Role, role));
+                                }
+                                var appIdentity = new ClaimsIdentity(roleClaims);
+                                context.Principal.AddIdentity(appIdentity);
+                            }
+
+                            return Task.CompletedTask;
+                        }
                     };
                     
                 });
@@ -56,11 +108,18 @@ namespace LibraryManagementSystem.Backend
         {
             if (env.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library Management System API V1");
                     c.RoutePrefix = string.Empty;
+
+                    c.OAuthClientId("swagger-client");
+                    c.OAuthClientSecret(null);
+                    c.OAuthRealm(null);
+                    c.OAuthAppName("Swagger UI");
+                    c.OAuthUseBasicAuthenticationWithAccessCodeGrant();
                 });
             }
 

@@ -15,14 +15,14 @@ namespace LibraryManagementSystem.Backend.Services
             this._context = context;
         }
 
-        public async Task<User> AuthenticateAsync(string username, string password)
+        public async Task<User?> AuthenticateAsync(string username, string password)
         {
             string encryptedPassword = EncryptionUtil.Encrypt(password);
 
             return await this._context.Users.SingleOrDefaultAsync(user => user.Username == username && user.Password == encryptedPassword);
         }
 
-        public async Task<User> GetUserByIDAsync(int userID)
+        public async Task<User?> GetUserByIDAsync(int userID)
         {
             return await this._context.Users.FindAsync(userID);
         }
@@ -39,17 +39,26 @@ namespace LibraryManagementSystem.Backend.Services
             return user;
         }
 
-        public async Task<User> UpdateUserAsync(int userID, User updatedUser)
+        public async Task<User?> UpdateUserAsync(int userID, User updatedUser)
         {
-            User user = await this._context.Users.FindAsync(userID);
+            User? user = await this._context.Users.FindAsync(userID);
 
             if (user != null)
             {
-                user.Fullname = updatedUser.Fullname;
-                user.Email = updatedUser.Email;
-                user.Role = updatedUser.Role;
-                user.Username = updatedUser.Username;
-                user.Password = EncryptionUtil.Encrypt(updatedUser.Password); 
+                if(!string.IsNullOrEmpty(user.Fullname))
+                    user.Fullname = updatedUser.Fullname;
+
+                if(!string.IsNullOrEmpty(user.Email))
+                    user.Email = updatedUser.Email;
+
+                if (!string.IsNullOrEmpty(user.Role))
+                    user.Role = updatedUser.Role;
+
+                if (!string.IsNullOrEmpty(user.Username))
+                    user.Username = updatedUser.Username;
+
+                if (!string.IsNullOrEmpty(user.Password))
+                    user.Password = EncryptionUtil.Encrypt(updatedUser.Password); 
 
                 await this._context.SaveChangesAsync();
             }
@@ -59,7 +68,7 @@ namespace LibraryManagementSystem.Backend.Services
 
         public async Task<bool> DeleteUserAsync(int userID)
         {
-            User user = await this._context.Users.FindAsync(userID);
+            User? user = await this._context.Users.FindAsync(userID);
             
             if (user != null)
             {

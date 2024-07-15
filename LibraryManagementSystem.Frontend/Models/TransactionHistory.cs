@@ -1,7 +1,7 @@
 ﻿using LibraryManagementSystem.Frontend.Enums;
 using System;
 
-namespace LibraryManagementSystem.Backend.Models
+namespace LibraryManagementSystem.Frontend.Models
 {
     public class TransactionHistory
     {
