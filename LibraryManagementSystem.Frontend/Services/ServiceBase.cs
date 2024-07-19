@@ -9,12 +9,15 @@ namespace LibraryManagementSystem.Frontend.Services
 {
     public class ServiceBase
     {
-        protected readonly HttpClient _httpClient;
+        private readonly HttpClient _client;
 
-        public ServiceBase(HttpClient httpClient)
+        public ServiceBase()
         {
-            this._httpClient = httpClient;
-            this._httpClient.BaseAddress = new Uri("http://localhost:5109/api/");
+            this._client = new HttpClient{
+                BaseAddress = new Uri("http://localhost:5109/api/")
+            };
         }
+
+        public HttpClient Client { get { return this._client; } }
     }
 }

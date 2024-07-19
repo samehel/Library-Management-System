@@ -77,14 +77,14 @@ namespace LibraryManagementSystem.Backend
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
                     };
 
                     opt.Events = new JwtBearerEvents
                     {
                         OnTokenValidated = context =>
                         {
-                            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                            var claimsIdentity = context.Principal!.Identity as ClaimsIdentity;
                             if (claimsIdentity != null)
                             {
                                 var roles = claimsIdentity.FindAll(ClaimTypes.Role).Select(c => c.Value);

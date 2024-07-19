@@ -8,6 +8,6 @@ namespace LibraryManagementSystem.Backend.Models
         public int UserID { get; set; }
         public int BookID { get; set; }
         public TransactionType TransactionType { get; set; }
-        public DateTime TransactionDate => DateTime.Now;
+        public DateTime TransactionDate { get; private set; } = DateTime.Now;
     }
 }

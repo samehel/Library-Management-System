@@ -25,9 +25,11 @@ namespace LibraryManagementSystem.Backend.Models
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Name, user.Username!),
+                    new Claim(ClaimTypes.Email, user.Email!),
+                    new Claim(ClaimTypes.Role, user.Role!),
+                    new Claim("Fullname", user.Fullname!),
+                    new Claim("Password", user.Password!)
                 }),
                 Expires = DateTime.UtcNow.AddHours(12),
                 Issuer = issuer,

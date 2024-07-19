@@ -2,6 +2,7 @@
 using LibraryManagementSystem.Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
 namespace LibraryManagementSystem.Backend.Controllers
@@ -38,6 +39,10 @@ namespace LibraryManagementSystem.Backend.Controllers
 
             var invokedUserID = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             User? invokedUser = await this._userService.GetUserByIDAsync(int.Parse(invokedUserID!));
+
+            if (string.IsNullOrEmpty(invokedUser?.Role) || (!invokedUser.Role.Equals("Admin")))
+                return Forbid();
+
             await this._auditService.CreateAuditAsync(new Audit
             {
                 UserID = invokedUser!.ID,
@@ -55,22 +60,45 @@ namespace LibraryManagementSystem.Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser(User newUser)
         {
-            User createdUser = await this._userService.CreateUserAsync(newUser);
+            try
+            {
+                User createdUser = await this._userService.CreateUserAsync(newUser);
 
-            return CreatedAtAction(nameof(GetUserByID), new { userID = createdUser.ID }, createdUser);
+                await this._auditService.CreateAuditAsync(new Audit
+                {
+                    UserID = 0,
+                    ActionType = Enums.ActionType.REGISTER,
+                    Details = $"New Account created with username \"{createdUser.Username}\" and email \"{createdUser.Email}\"",
+                    isDeleted = false
+
+                });
+
+                return CreatedAtAction(nameof(GetUserByID), new { userID = createdUser.ID }, createdUser);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{userID}")]
         [Authorize(Roles = "Admin, Member")]
         public async Task<ActionResult<User>> UpdateUser(int userID, User updatedUser)
         {
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            var invokedUserID = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            User? invokedUser = await this._userService.GetUserByIDAsync(int.Parse(invokedUserID!));
 
-            Console.WriteLine(userRole);
-            if (string.IsNullOrEmpty(userRole) || (!userRole.Equals("Admin") && !userRole.Equals("Member")))
+            if (string.IsNullOrEmpty(invokedUser?.Role) || (!invokedUser.Role.Equals("Admin") && !invokedUser.Role.Equals("Member")))
                 return Forbid();
 
             User? user = await this._userService.UpdateUserAsync(userID, updatedUser);
+
+            await this._auditService.CreateAuditAsync(new Audit
+            {
+                UserID = invokedUser.ID,
+                ActionType = Enums.ActionType.UPDATE_USER,
+                Details = $"\"{invokedUser.Username}\" updated user info for user with ID \"{updatedUser.ID}\"",
+                isDeleted = false
+            });
 
             if(user == null)
                 return NotFound();
@@ -82,12 +110,21 @@ namespace LibraryManagementSystem.Backend.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> DeleteUser(int userID)
         {
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            var invokedUserID = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            User? invokedUser = await this._userService.GetUserByIDAsync(int.Parse(invokedUserID!));
 
-            if (string.IsNullOrEmpty(userRole) || !userRole.Equals("Admin"))
+            if (string.IsNullOrEmpty(invokedUser?.Role) || !invokedUser.Role.Equals("Admin"))
                 return Forbid();
 
             bool isDeleted = await this._userService.DeleteUserAsync(userID);
+
+            await this._auditService.CreateAuditAsync(new Audit
+            {
+                UserID = invokedUser.ID,
+                ActionType = Enums.ActionType.DELETE_USER,
+                Details = $"Admin \"{invokedUser.Username}\" deleted user with ID \"{userID}\"",
+                isDeleted = false
+            });
 
             if (!isDeleted)
                 return NotFound();

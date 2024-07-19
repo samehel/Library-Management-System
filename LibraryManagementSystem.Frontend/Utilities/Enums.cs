@@ -1,4 +1,4 @@
-﻿namespace LibraryManagementSystem.Frontend.Enums
+﻿namespace LibraryManagementSystem.Frontend.Utilities.Enums
 {
     public enum TransactionType
     {
@@ -21,6 +21,9 @@
         RETURN_BOOK,
         LOGIN,
         LOGOUT,
-        REGISTER
+        REGISTER,
+        GET_ALL_USERS,
+        UPDATE_USER,
+        DELETE_USER
     }
 }

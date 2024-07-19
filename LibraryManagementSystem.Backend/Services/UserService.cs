@@ -17,9 +17,24 @@ namespace LibraryManagementSystem.Backend.Services
 
         public async Task<User?> AuthenticateAsync(string username, string password)
         {
-            string encryptedPassword = EncryptionUtil.Encrypt(password);
+            var user = await this._context.Users.SingleOrDefaultAsync(user => user.Username == username);
 
-            return await this._context.Users.SingleOrDefaultAsync(user => user.Username == username && user.Password == encryptedPassword);
+            if (user == null)
+                return null;
+
+            if(EncryptionUtil.isEncrypted(user.Password))
+            {
+                if (EncryptionUtil.Decrypt(user.Password) == password)
+                {
+                    user.Password = EncryptionUtil.Decrypt(user.Password);
+                    return user;
+                }
+            }
+
+            if (user.Password == password)
+                return user;
+            
+            return null;
         }
 
         public async Task<User?> GetUserByIDAsync(int userID)
@@ -32,8 +47,16 @@ namespace LibraryManagementSystem.Backend.Services
             return await this._context.Users.ToListAsync();
         }
 
+        public async Task<bool> IsUsernameTakenAsync(string username)
+        {
+            return await this._context.Users.AnyAsync(user => user.Username == username);
+        }
+
         public async Task<User> CreateUserAsync(User user)
         {
+            if (await IsUsernameTakenAsync(user.Username!))
+                throw new Exception("Username is already taken");
+
             this._context.Users.Add(user);
             await this._context.SaveChangesAsync();
             return user;
@@ -45,19 +68,19 @@ namespace LibraryManagementSystem.Backend.Services
 
             if (user != null)
             {
-                if(!string.IsNullOrEmpty(user.Fullname))
+                if(!string.IsNullOrEmpty(updatedUser.Fullname))
                     user.Fullname = updatedUser.Fullname;
 
-                if(!string.IsNullOrEmpty(user.Email))
+                if(!string.IsNullOrEmpty(updatedUser.Email))
                     user.Email = updatedUser.Email;
 
-                if (!string.IsNullOrEmpty(user.Role))
+                if (!string.IsNullOrEmpty(updatedUser.Role))
                     user.Role = updatedUser.Role;
 
-                if (!string.IsNullOrEmpty(user.Username))
+                if (!string.IsNullOrEmpty(updatedUser.Username))
                     user.Username = updatedUser.Username;
 
-                if (!string.IsNullOrEmpty(user.Password))
+                if (!string.IsNullOrEmpty(updatedUser.Password))
                     user.Password = EncryptionUtil.Encrypt(updatedUser.Password); 
 
                 await this._context.SaveChangesAsync();

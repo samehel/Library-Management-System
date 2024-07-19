@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Frontend.Enums;
+﻿using LibraryManagementSystem.Frontend.Utilities.Enums;
 
 namespace LibraryManagementSystem.Frontend.Models
 {
@@ -7,7 +7,7 @@ namespace LibraryManagementSystem.Frontend.Models
         public int ID { get; set; }
         public int UserID { get; set; }
         public double Amount { get; set; }
-        public string? Reason { get; set; }
+        public string Reason { get; set; }
         public PaymentStatus Status { get; set; }
     }
 }

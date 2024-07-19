@@ -22,6 +22,8 @@
         LOGIN,
         LOGOUT,
         REGISTER,
-        GET_ALL_USERS
+        GET_ALL_USERS,
+        UPDATE_USER,
+        DELETE_USER
     }
 }

@@ -3,6 +3,7 @@ using System;
 using LibraryManagementSystem.Backend.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagementSystem.Backend.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240716180233_AuditTableChanges_ActionDate2")]
+    partial class AuditTableChanges_ActionDate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
@@ -22,9 +25,6 @@ namespace LibraryManagementSystem.Backend.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("ActionDate")
-                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ActionType")
                         .HasColumnType("INTEGER");
@@ -84,7 +84,7 @@ namespace LibraryManagementSystem.Backend.Migrations
                     b.Property<int>("BookID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("BorrowDate")
+                    b.Property<DateTime>("BorrowDate")
                         .HasColumnType("TEXT");
 
                     b.Property<double>("LateFee")
@@ -92,9 +92,6 @@ namespace LibraryManagementSystem.Backend.Migrations
 
                     b.Property<int>("RenewalCount")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("ReturnDate")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserID")
                         .HasColumnType("INTEGER");
@@ -155,9 +152,6 @@ namespace LibraryManagementSystem.Backend.Migrations
 
                     b.Property<int>("BookID")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("INTEGER");

@@ -1,61 +1,53 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LibraryManagementSystem.Backend.Utils
 {
     public static class EncryptionUtil
     {
         private static readonly byte[] _key = Encoding.UTF8.GetBytes("v*JWgusYV6F)5#Wq");
-        private static readonly byte[] _iv = Encoding.UTF8.GetBytes("Ty!4@Gv(Y9@FY9@");
 
-        public static string Encrypt(string password)
+        public static string Encrypt(string input)
         {
-            if (password == null)
+            if (input == null)
                 return string.Empty;
 
-            using (Aes aesAlg = Aes.Create())
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] outputBytes = new byte[inputBytes.Length];
+
+            for (int i = 0; i < inputBytes.Length; i++)
             {
-                aesAlg.Key = _key;
-                aesAlg.IV = _iv;
-
-                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
-
-                using (MemoryStream msEncrypt = new MemoryStream()) 
-                {
-                    using (CryptoStream csStream = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                    {
-                        using (StreamWriter swEncrypt = new StreamWriter(csStream))
-                        {
-                            swEncrypt.Write(password);
-                        }
-                    }
-                    return Convert.ToBase64String(msEncrypt.ToArray());
-                }
+                outputBytes[i] = (byte)(inputBytes[i] ^ _key[i % _key.Length]);
             }
+
+            return Convert.ToBase64String(outputBytes);
         }
 
-        public static string Decrypt(string password)
+        public static string Decrypt(string input)
         {
-            byte[] passwordBytes = Convert.FromBase64String(password);
+            if (input == null)
+                return string.Empty;
 
-            using (Aes aesAlg = Aes.Create())
+            byte[] inputBytes = Convert.FromBase64String(input);
+            byte[] outputBytes = new byte[inputBytes.Length];
+
+            for (int i = 0; i < inputBytes.Length; i++)
             {
-                aesAlg.Key = _key;
-                aesAlg.IV = _iv;
-
-                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
-
-                using (MemoryStream msDecrypt = new MemoryStream(passwordBytes))
-                {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            return srDecrypt.ReadToEnd();
-                        }
-                    }
-                }
+                outputBytes[i] = (byte)(inputBytes[i] ^ _key[i % _key.Length]);
             }
+
+            return Encoding.UTF8.GetString(outputBytes);
+        }
+
+        public static bool isEncrypted(string input)
+        {
+            if(string.IsNullOrEmpty(input))
+                return false;
+
+            string encryptionPattern = @"^[a-zA-Z0-9+/]*={0,2}$";
+
+            return Regex.IsMatch(input, encryptionPattern);
         }
     }
 }
