@@ -1,4 +1,5 @@
 ﻿using LibraryManagementSystem.Frontend.Models;
+using LibraryManagementSystem.Frontend.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,7 +16,9 @@ namespace LibraryManagementSystem.Frontend.Views
         {
             InitializeComponent();
             LoadView("HomeView");
+            UpdateAdminPanelVisibility();
         }
+
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -42,6 +45,7 @@ namespace LibraryManagementSystem.Frontend.Views
                 "BooksView" => new BooksView(),
                 "CartView" => new CartView(),
                 "AccountView" => new AccountView(),
+                "AdminPanelView" => new AdminPanelView(),
                 _ => new HomeView(),
             };
 
@@ -64,6 +68,9 @@ namespace LibraryManagementSystem.Frontend.Views
                     case "#AccountView":
                         ContentArea.Content = new AccountView();
                         break;
+                    case "#AdminPanelView":
+                        ContentArea.Content = new AdminPanelView();
+                        break;
                     default:
                         break;
                 }
@@ -81,11 +88,32 @@ namespace LibraryManagementSystem.Frontend.Views
         public static void SetCurrentUser(User user)
         {
             CurrentUser = user;
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                if (mainWindow != null)
+                {
+                    mainWindow.UpdateAdminPanelVisibility();
+                }
+            });
         }
 
         public static void SetUserToken(Token token)
         {
             UserToken = token;
+        }
+
+        private void UpdateAdminPanelVisibility()
+        {
+            if (CurrentUser != null && CurrentUser.Role == "Admin")
+            {
+                AdminPanelButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AdminPanelButton.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

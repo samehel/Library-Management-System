@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:LibraryManagementSystem.Frontend.ViewModels"
         mc:Ignorable="d"
         Title="Library Management System" Height="585" Width="1040"
         WindowStyle="None" AllowsTransparency="True" Background="White"
@@ -42,12 +43,10 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="10"/>
-            <!-- Adjust Padding as needed -->
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="0,5"/>
-            <!-- Adjust Margin as needed -->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -94,6 +93,7 @@
                 <Button Content="Books" Tag="BooksView" Style="{StaticResource NavigationButtonStyle}" Click="NavigationButton_Click" Width="48" Height="46" Margin="10,5"/>
                 <Button Content="Cart" Tag="CartView" Style="{StaticResource NavigationButtonStyle}" Click="NavigationButton_Click" Width="33" Height="46" Margin="10,5"/>
                 <Button Content="Account" Tag="AccountView" Style="{StaticResource NavigationButtonStyle}" Click="NavigationButton_Click" Width="65" Height="45" Margin="10,5"/>
+                <Button x:Name="AdminPanelButton" Content="Admin Panel" Tag="AdminPanelView" Style="{StaticResource NavigationButtonStyle}" Click="NavigationButton_Click" Width="119" Height="45" />
             </StackPanel>
 
             <!-- Placeholder for content -->

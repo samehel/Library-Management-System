@@ -42,12 +42,28 @@ namespace LibraryManagementSystem.Backend.Utils
 
         public static bool isEncrypted(string input)
         {
-            if(string.IsNullOrEmpty(input))
+            if (string.IsNullOrEmpty(input))
                 return false;
 
-            string encryptionPattern = @"^[a-zA-Z0-9+/]*={0,2}$";
+            // Check if the string matches Base64 encoding pattern
+            string base64Pattern = @"^[a-zA-Z0-9+/]*={0,2}$";
+            if (!Regex.IsMatch(input, base64Pattern))
+                return false;
 
-            return Regex.IsMatch(input, encryptionPattern);
+            try
+            {
+                // Attempt to decode from Base64
+                byte[] decodedBytes = Convert.FromBase64String(input);
+
+                // Further validation can be added here based on encryption characteristics
+                // For example, check length or other patterns
+
+                return decodedBytes.Length > 0;  // Return true if decoded bytes are non-empty
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }
