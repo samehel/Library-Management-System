@@ -25,4 +25,13 @@ namespace LibraryManagementSystem.Backend.Services
         Task<List<Audit>> GetAllAuditsAsync();
         Task<List<Audit>> GetAllDeletedAuditsAsync();
     }
+
+    public interface IBookService
+    {
+        Task<Book> CreateBookAsync(Book book);
+        Task<bool> DeleteBookAsync(int bookID);
+        Task<Book?> GetBookAsync(int bookID);
+        Task<Book?> UpdateBookAsync(int bookID, Book updatedBook);
+        Task<List<Book>> GetAllBooksAsync();
+    }
 }

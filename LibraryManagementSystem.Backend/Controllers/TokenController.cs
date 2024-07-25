@@ -31,7 +31,7 @@ namespace LibraryManagementSystem.Backend.Controllers
             await this._auditService.CreateAuditAsync(new Audit
             {
                 UserID = 0,
-                ActionType = Enums.ActionType.LOGIN,
+                ActionType = Enums.ActionType.LOGIN.ToString(),
                 Details = $"User \"{user?.Username}\" was logged into the system",
                 isDeleted = false
 

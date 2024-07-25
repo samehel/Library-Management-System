@@ -46,12 +46,12 @@ namespace LibraryManagementSystem.Backend.Controllers
             await this._auditService.CreateAuditAsync(new Audit
             {
                 UserID = invokedUser!.ID,
-                ActionType = Enums.ActionType.GET_ALL_USERS,
+                ActionType = Enums.ActionType.GET_ALL_USERS.ToString(),
                 Details = $"Admin {invokedUser.Username} has requested to view the list of exisitng members.",
                 isDeleted = false
             });
 
-            if(users.Count == 0) 
+            if(users.Count == 0 || users == null) 
                 return NotFound();
 
             return Ok(users);  
@@ -67,7 +67,7 @@ namespace LibraryManagementSystem.Backend.Controllers
                 await this._auditService.CreateAuditAsync(new Audit
                 {
                     UserID = 0,
-                    ActionType = Enums.ActionType.REGISTER,
+                    ActionType = Enums.ActionType.REGISTER.ToString(),
                     Details = $"New Account created with username \"{createdUser.Username}\" and email \"{createdUser.Email}\"",
                     isDeleted = false
 
@@ -92,16 +92,16 @@ namespace LibraryManagementSystem.Backend.Controllers
 
             User? user = await this._userService.UpdateUserAsync(userID, updatedUser);
 
+            if (user == null)
+                return NotFound();
+
             await this._auditService.CreateAuditAsync(new Audit
             {
                 UserID = invokedUser.ID,
-                ActionType = Enums.ActionType.UPDATE_USER,
+                ActionType = Enums.ActionType.UPDATE_USER.ToString(),
                 Details = $"\"{invokedUser.Username}\" updated user info for user with ID \"{updatedUser.ID}\"",
                 isDeleted = false
             });
-
-            if(user == null)
-                return NotFound();
 
             return Ok(user);
         }
@@ -118,16 +118,16 @@ namespace LibraryManagementSystem.Backend.Controllers
 
             bool isDeleted = await this._userService.DeleteUserAsync(userID);
 
+            if (!isDeleted)
+                return NotFound();
+
             await this._auditService.CreateAuditAsync(new Audit
             {
                 UserID = invokedUser.ID,
-                ActionType = Enums.ActionType.DELETE_USER,
+                ActionType = Enums.ActionType.DELETE_USER.ToString(),
                 Details = $"Admin \"{invokedUser.Username}\" deleted user with ID \"{userID}\"",
                 isDeleted = false
             });
-
-            if (!isDeleted)
-                return NotFound();
 
             return NoContent();
         }

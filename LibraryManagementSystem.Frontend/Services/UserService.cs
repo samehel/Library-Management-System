@@ -94,10 +94,11 @@ namespace LibraryManagementSystem.Frontend.Services
             }
         }
 
-        public async Task<string> DeleteUserAsync(int userID)
+        public async Task<string> DeleteUserAsync(int userID, string token)
         {
             try
             {
+                this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await this.Client.DeleteAsync($"users/{userID}");
 
                 if (response.StatusCode == HttpStatusCode.Forbidden)

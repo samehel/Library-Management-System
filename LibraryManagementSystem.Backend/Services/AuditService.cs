@@ -16,7 +16,7 @@ namespace LibraryManagementSystem.Backend.Services
 
         public async Task<Audit> CreateAuditAsync(Audit audit)
         {
-            this._context.Add(audit);
+            this._context.Audits.Add(audit);
             await this._context.SaveChangesAsync();
             return audit;
         }
@@ -27,7 +27,6 @@ namespace LibraryManagementSystem.Backend.Services
 
             if (audit != null)
             {
-                
                 audit.isDeleted = true;
                 await this._context.SaveChangesAsync();
                 return true;

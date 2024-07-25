@@ -1,6 +1,7 @@
 
 using LibraryManagementSystem.Backend.Contexts;
 using LibraryManagementSystem.Backend.Services;
+using LibraryManagementSystem.Backend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +13,7 @@ namespace LibraryManagementSystem.Backend
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ namespace LibraryManagementSystem.Backend
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAuditService, AuditService>();
+            builder.Services.AddScoped<IBookService, BookService>();
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen(c =>
@@ -58,6 +60,12 @@ namespace LibraryManagementSystem.Backend
             ConfigureAuthentication(builder);
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<LibraryContext>();
+                await DatabaseInitializerUtil.InitializeAsync(context);
+            }
 
             ConfigurePipeline(app, builder.Environment);
 

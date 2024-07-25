@@ -3,6 +3,7 @@ using System;
 using LibraryManagementSystem.Backend.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagementSystem.Backend.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240722193056_RemoveCartIDFromBooks")]
+    partial class RemoveCartIDFromBooks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
@@ -52,6 +55,9 @@ namespace LibraryManagementSystem.Backend.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("CartID")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -74,6 +80,8 @@ namespace LibraryManagementSystem.Backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CartID");
 
                     b.ToTable("Books");
                 });
@@ -119,21 +127,6 @@ namespace LibraryManagementSystem.Backend.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("LibraryManagementSystem.Backend.Models.CartBook", b =>
-                {
-                    b.Property<Guid>("CartID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BookID")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CartID", "BookID");
-
-                    b.HasIndex("BookID");
-
-                    b.ToTable("CartBooks");
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Backend.Models.Fine", b =>
@@ -229,33 +222,17 @@ namespace LibraryManagementSystem.Backend.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LibraryManagementSystem.Backend.Models.CartBook", b =>
-                {
-                    b.HasOne("LibraryManagementSystem.Backend.Models.Book", "Book")
-                        .WithMany("CartBooks")
-                        .HasForeignKey("BookID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LibraryManagementSystem.Backend.Models.Cart", "Cart")
-                        .WithMany("CartBooks")
-                        .HasForeignKey("CartID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Cart");
-                });
-
             modelBuilder.Entity("LibraryManagementSystem.Backend.Models.Book", b =>
                 {
-                    b.Navigation("CartBooks");
+                    b.HasOne("LibraryManagementSystem.Backend.Models.Cart", null)
+                        .WithMany("Books")
+                        .HasForeignKey("CartID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Backend.Models.Cart", b =>
                 {
-                    b.Navigation("CartBooks");
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

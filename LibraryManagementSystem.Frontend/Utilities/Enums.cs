@@ -24,6 +24,39 @@
         REGISTER,
         GET_ALL_USERS,
         UPDATE_USER,
-        DELETE_USER
+        DELETE_USER,
+        GET_BOOK,
+        UPDATE_BOOK,
+        CREATE_BOOK,
+        DELETE_BOOK
+    }
+
+    public enum Genre
+    {
+        Science,
+        Literature,
+        History,
+        Technology,
+        Art,
+        Music,
+        Philosophy,
+        Religion,
+        SocialScience,
+        Language,
+        Mathematics,
+        Medicine,
+        Law,
+        Education,
+        Psychology,
+        Fiction,
+        Poetry,
+        Drama,
+        Travel,
+        Biography,
+        Business,
+        SelfHelp,
+        Health,
+        ScienceFiction,
+        Mystery
     }
 }

@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagementSystem.Frontend.ViewModels
 {
@@ -69,7 +70,9 @@ namespace LibraryManagementSystem.Frontend.ViewModels
             }
         }
 
+        [Required(ErrorMessage = "Username is required.")]
         public string LoginUsername { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
         public string LoginPassword { get; set; }
         public string RegisterFullname { get; set; }
         public string RegisterEmail { get; set; }
