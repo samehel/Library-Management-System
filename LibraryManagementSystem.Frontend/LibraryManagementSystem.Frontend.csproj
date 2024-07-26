@@ -180,11 +180,13 @@
     <Compile Include="Models\Token.cs" />
     <Compile Include="Models\TransactionHistory.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Services\BackendService.cs" />
     <Compile Include="Services\BookService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Utilities\Enums.cs" />
+    <Compile Include="Utilities\ImageCache.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\BooksViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

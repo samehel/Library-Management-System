@@ -44,10 +44,21 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <TextBlock Text="Loading..."
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,70"
+                   Visibility="{Binding LoadingBarVisibility}"/>
+        <ProgressBar IsIndeterminate="True" 
+                     Visibility="{Binding LoadingBarVisibility}" 
+                     VerticalAlignment="Center" 
+                     HorizontalAlignment="Center" 
+                     Width="200" 
+                     Height="20"/>
         <ItemsControl ItemsSource="{Binding PagedBooks}" 
                       Width="Auto" 
                       Height="Auto" 
-                      Visibility="Visible">
+                      Visibility="{Binding ItemsControlVisibility}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="3"/>
@@ -60,7 +71,9 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Image Source="{Binding PictureUrl}" Height="150" Stretch="Uniform" />
+                        <Border BorderBrush="Black" BorderThickness="2">
+                            <Image Source="{Binding Image}" Height="150" Stretch="Uniform" />
+                        </Border>
                         <Button Content="View Details" 
                                 Margin="185,0,0,100"
                                 Style="{StaticResource BootstrapButton}"

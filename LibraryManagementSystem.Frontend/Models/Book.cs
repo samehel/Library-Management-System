@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using LibraryManagementSystem.Frontend.Utilities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace LibraryManagementSystem.Frontend.Models
 {
@@ -14,5 +17,6 @@ namespace LibraryManagementSystem.Frontend.Models
         public string PictureUrl { get; set; }
         public string DeweyDecimalNumber { get; set; }
         public List<CartBook> CartBooks { get; set; }
+        public BitmapImage Image { get; set; }
     }
 }

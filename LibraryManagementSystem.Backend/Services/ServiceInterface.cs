@@ -34,4 +34,9 @@ namespace LibraryManagementSystem.Backend.Services
         Task<Book?> UpdateBookAsync(int bookID, Book updatedBook);
         Task<List<Book>> GetAllBooksAsync();
     }
+
+    public interface IBackendService
+    {
+        void TerminateProcess();
+    }
 }

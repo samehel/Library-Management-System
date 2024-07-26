@@ -12,6 +12,8 @@ namespace LibraryManagementSystem.Frontend.Views
     public partial class MainWindow : Window
     {
 
+        private readonly BackendService _service;
+
         public static User CurrentUser { get; set; }
         public static Token UserToken { get; set; }
         public static List<Book> Books { get; set; }
@@ -21,6 +23,7 @@ namespace LibraryManagementSystem.Frontend.Views
             InitializeComponent();
             LoadView("HomeView");
             UpdateAdminPanelVisibility();
+            this._service = new BackendService();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -87,6 +90,7 @@ namespace LibraryManagementSystem.Frontend.Views
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+            this._service.TerminateProcessAsync();
         }
         public static void SetCurrentUser(User user)
         {

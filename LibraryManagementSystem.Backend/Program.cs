@@ -25,6 +25,7 @@ namespace LibraryManagementSystem.Backend
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAuditService, AuditService>();
             builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<IBackendService, BackendService>();
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen(c =>

@@ -1,11 +1,15 @@
 ﻿using LibraryManagementSystem.Frontend.Models;
 using LibraryManagementSystem.Frontend.Services;
+using LibraryManagementSystem.Frontend.Utilities;
 using LibraryManagementSystem.Frontend.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace LibraryManagementSystem.Frontend.ViewModels
 {
@@ -18,8 +22,36 @@ namespace LibraryManagementSystem.Frontend.ViewModels
         private bool _canGoToNextPage;
         private int _currentPage;
         private const int BooksPerPage = 9;
+        private Visibility _loadingBarVisibility = Visibility.Collapsed;
+        private Visibility _itemsControlVisibility = Visibility.Collapsed;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Visibility LoadingBarVisibility
+        {
+            get => _loadingBarVisibility;
+            set
+            {
+                if (_loadingBarVisibility != value)
+                {
+                    _loadingBarVisibility = value;
+                    OnPropertyChanged(nameof(LoadingBarVisibility));
+                }
+            }
+        }
+
+        public Visibility ItemsControlVisibility
+        {
+            get => _itemsControlVisibility;
+            set
+            {
+                if (_itemsControlVisibility != value)
+                {
+                    _itemsControlVisibility = value;
+                    OnPropertyChanged(nameof(ItemsControlVisibility));
+                }
+            }
+        }
 
         public ObservableCollection<Book> PagedBooks
         {
@@ -69,17 +101,33 @@ namespace LibraryManagementSystem.Frontend.ViewModels
 
         public async void LoadBooks()
         {
+            // Show loading bar and hide books
+            LoadingBarVisibility = Visibility.Visible;
+            ItemsControlVisibility = Visibility.Collapsed;
+
+            // Load books asynchronously
             if (MainWindow.Books == null || MainWindow.Books.Count == 0)
+            {
                 MainWindow.Books = await _bookService.GetAllBooksAsync();
+                await ImageCache.DownloadAndCacheImagesAsync(MainWindow.Books);
+            }
 
             _allBooks = MainWindow.Books;
             CurrentPage = 1;
             UpdatePagedBooks();
+
+            // Update UI to hide loading bar and show books
+            LoadingBarVisibility = Visibility.Collapsed;
+            ItemsControlVisibility = Visibility.Visible;
         }
 
         public void UpdatePagedBooks()
         {
             var books = _allBooks.Skip((CurrentPage - 1) * BooksPerPage).Take(BooksPerPage).ToList();
+
+            foreach (Book book in books)
+                book.Image = ImageCache.GetImage(book.PictureUrl);
+            
             PagedBooks = new ObservableCollection<Book>(books);
             CanGoToPreviousPage = CurrentPage > 1;
             CanGoToNextPage = CurrentPage < (_allBooks.Count + BooksPerPage - 1) / BooksPerPage;
