@@ -15,7 +15,6 @@
         <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" Executed="CloseButton_Click"/>
     </Window.CommandBindings>
     <Window.Resources>
-        <!-- Define styles here -->
         <Style x:Key="NavigationButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="White"/>
@@ -66,19 +65,16 @@
     </Window.Resources>
 
     <Grid>
-        <!-- Main Layout -->
         <DockPanel>
 
             <Border DockPanel.Dock="Top" Background="#333" Height="30" VerticalAlignment="Top">
                 <Grid>
-                    <!-- Title -->
                     <TextBlock Text="Library Management System" VerticalAlignment="Center" Margin="10,0" FontWeight="Bold" FontSize="16" Foreground="White">
                         <TextBlock.Style>
                             <Style/>
                         </TextBlock.Style>
                     </TextBlock>
 
-                    <!-- Buttons -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="-" Style="{StaticResource CustomButtonStyle}" Command="{x:Static SystemCommands.MinimizeWindowCommand}" Margin="0 0"/>
                         <Button Content="X" Style="{StaticResource CustomButtonStyle}" Command="{x:Static SystemCommands.CloseWindowCommand}" Margin="10 0"/>
@@ -86,7 +82,6 @@
                 </Grid>
             </Border>
 
-            <!-- Left navigation pane -->
             <StackPanel DockPanel.Dock="Left" Width="150" Background="#333">
                 <TextBlock Text="Welcome" HorizontalAlignment="Center" Margin="0,20,0,10" FontSize="16" Foreground="White" FontWeight="Bold"/>
                 <Button Content="Home" Tag="HomeView" Style="{StaticResource NavigationButtonStyle}" Click="NavigationButton_Click" Width="48" Height="46" Margin="10,5"/>
@@ -96,7 +91,6 @@
                 <Button x:Name="AdminPanelButton" Content="Admin Panel" Tag="AdminPanelView" Style="{StaticResource NavigationButtonStyle}" Click="NavigationButton_Click" Width="119" Height="45" />
             </StackPanel>
 
-            <!-- Placeholder for content -->
             <ContentControl x:Name="ContentArea" DockPanel.Dock="Right" Margin="10" Background="White" />
         </DockPanel>
     </Grid>

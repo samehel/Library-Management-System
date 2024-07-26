@@ -1,8 +1,11 @@
 ﻿using LibraryManagementSystem.Frontend.Models;
 using LibraryManagementSystem.Frontend.ViewModels;
 using System.Windows;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Threading;
+using LibraryManagementSystem.Frontend.Services;
 
 namespace LibraryManagementSystem.Frontend.Views
 {
@@ -11,6 +14,7 @@ namespace LibraryManagementSystem.Frontend.Views
 
         public static User CurrentUser { get; set; }
         public static Token UserToken { get; set; }
+        public static List<Book> Books { get; set; }
 
         public MainWindow()
         {
@@ -18,7 +22,6 @@ namespace LibraryManagementSystem.Frontend.Views
             LoadView("HomeView");
             UpdateAdminPanelVisibility();
         }
-
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -102,6 +105,11 @@ namespace LibraryManagementSystem.Frontend.Views
         public static void SetUserToken(Token token)
         {
             UserToken = token;
+        }
+
+        public static void SetBooks(List<Book> books)
+        {
+            Books = books;
         }
 
         private void UpdateAdminPanelVisibility()

@@ -1,28 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LibraryManagementSystem.Frontend.Models;
+using LibraryManagementSystem.Frontend.ViewModels;
+using System;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LibraryManagementSystem.Frontend.Views
 {
-    /// <summary>
-    /// Interaction logic for BookView.xaml
-    /// </summary>
     public partial class BooksView : UserControl
     {
+        private Book _selectedBook;
+
         public BooksView()
         {
             InitializeComponent();
         }
+
+        private void AddToCartButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is BooksViewModel viewModel && sender is Button button && button.CommandParameter is int bookId)
+            {
+                viewModel.AddToCart(bookId);
+            }
+        }
+
+        private void ViewDetailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is BooksViewModel viewModel && sender is Button button && button.CommandParameter is int bookId)
+            {
+                viewModel.ViewDetails(bookId);
+            }
+        }
+
+        private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is BooksViewModel viewModel)
+            {
+                viewModel.PreviousPage();
+            }
+        }
+
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is BooksViewModel viewModel)
+            {
+                viewModel.NextPage();
+            }
+        }
     }
+
 }

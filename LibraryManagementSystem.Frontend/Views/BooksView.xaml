@@ -3,9 +3,92 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:LibraryManagementSystem.Frontend.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Welcome to the Books Page" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    <UserControl.Resources>
+        <Style x:Key="BootstrapButton" TargetType="Button">
+            <Setter Property="Background" Value="#007bff"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#007bff"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <vm:BooksViewModel />
+    </UserControl.DataContext>
+    <Grid x:Name="BooksGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ItemsControl ItemsSource="{Binding PagedBooks}" 
+                      Width="Auto" 
+                      Height="Auto" 
+                      Visibility="Visible">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Image Source="{Binding PictureUrl}" Height="150" Stretch="Uniform" />
+                        <Button Content="View Details" 
+                                Margin="185,0,0,100"
+                                Style="{StaticResource BootstrapButton}"
+                                CommandParameter="{Binding ID}"
+                                Click="ViewDetailsButton_Click"/>
+                        <Button Content="Add to Cart" 
+                                Margin="185,0,0,50"
+                                Style="{StaticResource BootstrapButton}"
+                                CommandParameter="{Binding ID}"
+                                Click="AddToCartButton_Click"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Previous" 
+                    Style="{StaticResource BootstrapButton}" 
+                    Click="PreviousPageButton_Click" 
+                    IsEnabled="{Binding CanGoToPreviousPage}" 
+                    Margin="5"/>
+            <TextBlock Text="{Binding CurrentPage, StringFormat='Page {0}'}" 
+                       VerticalAlignment="Center" 
+                       Margin="5"/>
+            <Button Content="Next" 
+                    Style="{StaticResource BootstrapButton}" 
+                    Click="NextPageButton_Click" 
+                    IsEnabled="{Binding CanGoToNextPage}" 
+                    Margin="5"/>
+        </StackPanel>
     </Grid>
 </UserControl>

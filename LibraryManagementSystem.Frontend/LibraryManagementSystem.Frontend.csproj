@@ -186,6 +186,7 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\BooksViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AccountView.xaml.cs">
