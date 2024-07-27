@@ -45,6 +45,8 @@ namespace LibraryManagementSystem.Backend.Services
         Task<Cart> AddBookToCart(int userID, int bookID);
         Task<Cart> RemoveBookFromCart(int userID, int bookID);
         Task<Cart> ClearCart(int userID);
+        Task<Cart> UpdateCartBookQuantityAsync(int userID, int bookID, int quantity);
+        Task<Cart> GetOrCreateCart(int userID);
     }
 
     public interface ICartBookService

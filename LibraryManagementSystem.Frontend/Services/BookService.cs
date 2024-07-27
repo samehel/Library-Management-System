@@ -9,18 +9,23 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using LibraryManagementSystem.Frontend.Models;
+using LibraryManagementSystem.Frontend.Views;
 
 namespace LibraryManagementSystem.Frontend.Services
 {
     public class BookService : ServiceBase
     {
-        public BookService(): base() { }
+        public BookService(): base()
+        {
+            if (MainWindow.UserToken != null)
+                if(!string.IsNullOrEmpty(MainWindow.UserToken.TokenValue))
+                    this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", MainWindow.UserToken.TokenValue);
+        }
 
-        public async Task<Book> GetBookByIDAsync(int bookID, string token)
+        public async Task<Book> GetBookByIDAsync(int bookID)
         {
             try
             {
-                this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await this.Client.GetAsync($"books/{bookID}");
                 response.EnsureSuccessStatusCode();
                 Book book = await response.Content.ReadAsAsync<Book>();
@@ -51,11 +56,10 @@ namespace LibraryManagementSystem.Frontend.Services
             }
         }
 
-        public async Task<Book> CreateBookAsync(Book newBook, string token)
+        public async Task<Book> CreateBookAsync(Book newBook)
         {
             try
             {
-                this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string json = JsonConvert.SerializeObject(newBook);
                 HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -76,11 +80,10 @@ namespace LibraryManagementSystem.Frontend.Services
             }
         }
 
-        public async Task<Book> UpdateBookAsync(int bookID, Book updatedBook, string token)
+        public async Task<Book> UpdateBookAsync(int bookID, Book updatedBook)
         {
             try
             {
-                this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string json = JsonConvert.SerializeObject(updatedBook);
                 HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -99,11 +102,10 @@ namespace LibraryManagementSystem.Frontend.Services
             }
         }
 
-        public async Task<string> DeleteBookAsync(int bookID, string token)
+        public async Task<string> DeleteBookAsync(int bookID)
         {
             try
             {
-                this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await this.Client.DeleteAsync($"books/{bookID}");
 
                 if (response.StatusCode == HttpStatusCode.Forbidden)

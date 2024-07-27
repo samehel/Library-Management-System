@@ -182,6 +182,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\BackendService.cs" />
     <Compile Include="Services\BookService.cs" />
+    <Compile Include="Services\CartService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\UserService.cs" />

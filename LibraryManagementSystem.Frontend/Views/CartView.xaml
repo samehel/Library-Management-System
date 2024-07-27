@@ -3,7 +3,95 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:LibraryManagementSystem.Frontend.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.DataContext>
+        <vm:CartViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style x:Key="BootstrapButton" TargetType="Button">
+            <Setter Property="Background" Value="#007bff"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#007bff"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                            <!-- Added CornerRadius -->
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <TextBlock x:Name="NotLoggedInMessage" Text="You need to be logged in to view this" Visibility="Collapsed" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Red"/>
+        <TextBlock x:Name="EmptyCartMessage" Text="Your cart is empty" Visibility="Collapsed" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Gray"/>
+        <StackPanel x:Name="CartItemsPanel" Visibility="Collapsed">
+            <ListView x:Name="CartItemsListView" ItemsSource="{Binding CartBooks}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Image" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Book.PictureUrl}" Width="50" Height="50"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Title and Author" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Book.Title}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Book.Author}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Quantity" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Content="-" Click="DecreaseQuantity_Click" Tag="{Binding BookID}" Style="{StaticResource BootstrapButton}"/>
+                                        <TextBlock Text="{Binding Quantity}" Width="30" TextAlignment="Center"/>
+                                        <Button Content="+" Click="IncreaseQuantity_Click" Tag="{Binding BookID}" Style="{StaticResource BootstrapButton}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Actions" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Delete" Click="RemoveFromCart_Click" Tag="{Binding BookID}" Style="{StaticResource BootstrapButton}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="Clear Basket" Click="ClearCart_Click" Margin="5" Style="{StaticResource BootstrapButton}"/>
+                <Button Content="Checkout" Margin="5" Style="{StaticResource BootstrapButton}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </UserControl>

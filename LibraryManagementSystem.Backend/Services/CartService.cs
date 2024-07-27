@@ -13,7 +13,7 @@ namespace LibraryManagementSystem.Backend.Services
             this._context = context;
         }
 
-        private async Task<Cart> GetOrCreateCart(int userID)
+        public async Task<Cart> GetOrCreateCart(int userID)
         {
             Cart? cart = this._context.Carts?.Include(c => c.CartBooks)!
                                            .ThenInclude(cb => cb.Book)
@@ -40,15 +40,29 @@ namespace LibraryManagementSystem.Backend.Services
             Cart cart = await GetOrCreateCart(userID);
             Book? book = await this._context.Books.FindAsync(bookID) ?? throw new Exception("The book you are trying to add to your cart does not exist");
 
-            CartBook cartBook = new CartBook
+            if (cart.CartBooks != null && cart.CartBooks.Any(cb => cb.BookID == bookID))
             {
-                CartID = cart.ID,
-                BookID = book.ID,
-                Cart = cart,
-                Book = book
-            };
+                var cartBook = cart.CartBooks.FirstOrDefault(cb => cb.BookID == bookID);
+                if (cartBook == null)
+                    throw new Exception("Update failed, cart does not contain any books");
 
-            cart.CartBooks!.Add(cartBook);
+                cartBook.Quantity += 1;
+                this._context.CartBooks.Update(cartBook);
+                await this._context.SaveChangesAsync();
+            }
+            else
+            {
+                CartBook cartBook = new CartBook
+                {
+                    CartID = cart.ID,
+                    BookID = book.ID,
+                    Cart = cart,
+                    Book = book,
+                    Quantity = 1
+                };
+
+                cart.CartBooks!.Add(cartBook);
+            }
             await this._context.SaveChangesAsync();
 
             return cart;
@@ -68,6 +82,24 @@ namespace LibraryManagementSystem.Backend.Services
             CartBook cartBook = cart.CartBooks!.FirstOrDefault(cb => cb.BookID == bookID) ?? throw new Exception("The book you are trying to add to your cart does not exist");
         
             cart.CartBooks!.Remove(cartBook);
+            await this._context.SaveChangesAsync();
+
+            return cart;
+        }
+
+        public async Task<Cart> UpdateCartBookQuantityAsync(int userID, int bookID, int quantity)
+        {
+            var cart = _context.Carts.Include(c => c.CartBooks).FirstOrDefault(c => c.UserID == userID);
+
+            if (cart == null)
+                throw new Exception("Update failed, cart does not exist");
+
+            var cartBook = cart.CartBooks!.FirstOrDefault(cb => cb.BookID == bookID);
+            if (cartBook == null)
+                throw new Exception("Update failed, cart does not contain any books");
+
+            cartBook.Quantity = quantity;
+            this._context.CartBooks.Update(cartBook);
             await this._context.SaveChangesAsync();
 
             return cart;

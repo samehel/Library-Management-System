@@ -8,12 +8,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Http.Headers;
 using System.Windows;
+using LibraryManagementSystem.Frontend.Views;
 
 namespace LibraryManagementSystem.Frontend.Services
 {
     public class UserService : ServiceBase
     {
-        public UserService() : base() { }
+        public UserService() : base()
+        {
+            if (MainWindow.UserToken != null)
+                if (!string.IsNullOrEmpty(MainWindow.UserToken.TokenValue))
+                    this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", MainWindow.UserToken.TokenValue);
+        }
 
         public async Task<User> GetUserByIDAsync(int userID)
         {
@@ -71,11 +77,10 @@ namespace LibraryManagementSystem.Frontend.Services
             }
         }
 
-        public async Task<User> UpdateUserAsync(int userID, User updatedUser, string token)
+        public async Task<User> UpdateUserAsync(int userID, User updatedUser)
         {
             try
             {
-                this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string json = JsonConvert.SerializeObject(updatedUser);
                 HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -94,11 +99,10 @@ namespace LibraryManagementSystem.Frontend.Services
             }
         }
 
-        public async Task<string> DeleteUserAsync(int userID, string token)
+        public async Task<string> DeleteUserAsync(int userID)
         {
             try
             {
-                this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await this.Client.DeleteAsync($"users/{userID}");
 
                 if (response.StatusCode == HttpStatusCode.Forbidden)

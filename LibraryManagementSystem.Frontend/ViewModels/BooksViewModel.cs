@@ -17,6 +17,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
     public class BooksViewModel : INotifyPropertyChanged
     {
         private readonly BookService _bookService;
+        private readonly CartService _cartService;
         private List<Book> _allBooks;
         private ObservableCollection<Book> _pagedBooks;
         private bool _canGoToPreviousPage;
@@ -97,6 +98,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
         public BooksViewModel()
         {
             _bookService = new BookService();
+            _cartService = new CartService();
             LoadBooks();
         }
 
@@ -302,7 +304,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
             IsPopupOpen = false;
         }
 
-        public void AddToCart(int bookId)
+        public async void AddToCart(int bookId)
         {
             if (MainWindow.CurrentUser == null || MainWindow.UserToken == null)
             {
@@ -310,6 +312,14 @@ namespace LibraryManagementSystem.Frontend.ViewModels
                 return;
             }
 
+            try
+            {
+                Cart cart = await this._cartService.AddToCartAsync(MainWindow.CurrentUser.ID, bookId);
+                MessageBox.Show("Book added to cart successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            } catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding book to cart: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

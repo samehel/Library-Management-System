@@ -1,4 +1,3 @@
-
 using LibraryManagementSystem.Backend.Contexts;
 using LibraryManagementSystem.Backend.Services;
 using LibraryManagementSystem.Backend.Utils;
@@ -8,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization; // Import this for JsonSerializerOptions
 
 namespace LibraryManagementSystem.Backend
 {
@@ -29,10 +29,17 @@ namespace LibraryManagementSystem.Backend
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<ICartBookService, CartBookService>();
 
-            builder.Services.AddControllers();
+            // Configure JSON serialization to handle circular references
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                });
+
             builder.Services.AddSwaggerGen(c =>
             {
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
                     Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
                       Enter 'Bearer' [space] and then your token in the text input below.
                       \r\n\r\nExample: 'Bearer 12345abcdef'",
@@ -100,7 +107,7 @@ namespace LibraryManagementSystem.Backend
                             {
                                 var roles = claimsIdentity.FindAll(ClaimTypes.Role).Select(c => c.Value);
                                 var roleClaims = new List<Claim>();
-                                foreach(var role in roles)
+                                foreach (var role in roles)
                                 {
                                     roleClaims.Add(new Claim(ClaimTypes.Role, role));
                                 }
@@ -111,7 +118,6 @@ namespace LibraryManagementSystem.Backend
                             return Task.CompletedTask;
                         }
                     };
-                    
                 });
         }
 

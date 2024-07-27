@@ -93,6 +93,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
                 CurrentUser = _tokenService.DecodeToken(UserToken.TokenValue);
                 MainWindow.SetCurrentUser(CurrentUser);
                 MainWindow.SetUserToken(UserToken);
+
                 IsLoggedIn = true;
                 MessageBox.Show("Login successful.");
             }
@@ -153,7 +154,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
 
             try
             {
-                User newUserData = await this._userService.UpdateUserAsync(CurrentUser.ID, updatedUser, UserToken.TokenValue);
+                User newUserData = await this._userService.UpdateUserAsync(CurrentUser.ID, updatedUser);
 
                 if (newUserData != null)
                     MessageBox.Show("User information successfully updated.");
