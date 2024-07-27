@@ -38,7 +38,7 @@ namespace LibraryManagementSystem.Backend.Utils
             await context.SaveChangesAsync();
         }
 
-        private static List<Book> GetInitialBooks() 
+        private static List<Book> GetInitialBooks()
         {
             return new List<Book>
             {
@@ -50,7 +50,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780199291141",
                     Genre = Genre.Science,
                     Quantity = 10,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8244084-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/7891217-M.jpg"
                 },
                 new Book
                 {
@@ -60,7 +60,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780141439518",
                     Genre = Genre.Literature,
                     Quantity = 8,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8049340-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/14619627-M.jpg"
                 },
                 new Book
                 {
@@ -70,7 +70,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780393336746",
                     Genre = Genre.History,
                     Quantity = 12,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7224874-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/12862851-L.jpg"
                 },
                 new Book
                 {
@@ -80,7 +80,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780385495325",
                     Genre = Genre.Technology,
                     Quantity = 5,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7806803-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/12983473-M.jpg"
                 },
                 new Book
                 {
@@ -90,7 +90,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780486281004",
                     Genre = Genre.Art,
                     Quantity = 7,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7877068-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/12820198-M.jpg"
                 },
                 new Book
                 {
@@ -100,7 +100,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780198727998",
                     Genre = Genre.Music,
                     Quantity = 6,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8239721-L.jpg"
+                    PictureUrl = "https://openlibrary.org/images/icons/avatar_book-sm.png"
                 },
                 new Book
                 {
@@ -110,17 +110,17 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780140449235",
                     Genre = Genre.Philosophy,
                     Quantity = 9,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8232231-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/11678488-M.jpg"
                 },
                 new Book
                 {
-                    Title = "The Quran",
-                    Description = "The holy book of Islam.",
+                    Title = "The Bhagavad Gita",
+                    Description = "A 700-verse Hindu scripture in Sanskrit.",
                     Author = "Various Authors",
-                    ISBN = "9781904063054",
+                    ISBN = "9780486406636",
                     Genre = Genre.Religion,
                     Quantity = 15,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7896282-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/11157767-M.jpg"
                 },
                 new Book
                 {
@@ -130,7 +130,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780316346627",
                     Genre = Genre.SocialScience,
                     Quantity = 11,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7301786-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/6819815-M.jpg"
                 },
                 new Book
                 {
@@ -140,7 +140,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780205309023",
                     Genre = Genre.Language,
                     Quantity = 10,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7436704-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/10519568-M.jpg"
                 },
                 new Book
                 {
@@ -150,7 +150,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780465026562",
                     Genre = Genre.Mathematics,
                     Quantity = 8,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7567816-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/14369212-M.jpg"
                 },
                 new Book
                 {
@@ -160,7 +160,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9781439107959",
                     Genre = Genre.Medicine,
                     Quantity = 7,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7973516-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/14637031-M.jpg"
                 },
                 new Book
                 {
@@ -170,7 +170,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780812984965",
                     Genre = Genre.Law,
                     Quantity = 6,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7820864-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/12001726-M.jpg"
                 },
                 new Book
                 {
@@ -180,7 +180,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780826412768",
                     Genre = Genre.Education,
                     Quantity = 5,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7319228-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/630082-M.jpg"
                 },
                 new Book
                 {
@@ -190,7 +190,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780374533557",
                     Genre = Genre.Psychology,
                     Quantity = 12,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7636816-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/13775637-M.jpg"
                 },
                 new Book
                 {
@@ -200,7 +200,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780061120084",
                     Genre = Genre.Fiction,
                     Quantity = 9,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8220625-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/14649208-M.jpg"
                 },
                 new Book
                 {
@@ -210,7 +210,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9781449486792",
                     Genre = Genre.Poetry,
                     Quantity = 11,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8503095-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/8084615-M.jpg"
                 },
                 new Book
                 {
@@ -220,7 +220,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780743477123",
                     Genre = Genre.Drama,
                     Quantity = 6,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8197882-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/12513623-M.jpg"
                 },
                 new Book
                 {
@@ -230,7 +230,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780446554796",
                     Genre = Genre.Travel,
                     Quantity = 7,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7565201-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/10418438-M.jpg"
                 },
                 new Book
                 {
@@ -240,7 +240,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9781451648539",
                     Genre = Genre.Biography,
                     Quantity = 8,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8194082-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/12178173-M.jpg"
                 },
                 new Book
                 {
@@ -250,7 +250,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780307887894",
                     Genre = Genre.Business,
                     Quantity = 10,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7603491-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/12634577-M.jpg"
                 },
                 new Book
                 {
@@ -260,7 +260,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780735211292",
                     Genre = Genre.SelfHelp,
                     Quantity = 5,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8260451-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/14620584-M.jpg"
                 },
                 new Book
                 {
@@ -270,7 +270,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9781250066118",
                     Genre = Genre.Health,
                     Quantity = 7,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7889397-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/7398330-M.jpg"
                 },
                 new Book
                 {
@@ -280,7 +280,7 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780441013593",
                     Genre = Genre.ScienceFiction,
                     Quantity = 9,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/8236314-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/6978883-M.jpg"
                 },
                 new Book
                 {
@@ -290,9 +290,10 @@ namespace LibraryManagementSystem.Backend.Utils
                     ISBN = "9780307454546",
                     Genre = Genre.Mystery,
                     Quantity = 10,
-                    PictureUrl = "https://covers.openlibrary.org/b/id/7519327-L.jpg"
+                    PictureUrl = "https://covers.openlibrary.org/b/id/11005892-M.jpg"
                 }
             };
         }
+
     }
 }

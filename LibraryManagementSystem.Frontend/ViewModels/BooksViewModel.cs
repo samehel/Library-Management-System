@@ -1,6 +1,7 @@
 ﻿using LibraryManagementSystem.Frontend.Models;
 using LibraryManagementSystem.Frontend.Services;
 using LibraryManagementSystem.Frontend.Utilities;
+using LibraryManagementSystem.Frontend.Utilities.Enums;
 using LibraryManagementSystem.Frontend.Views;
 using System;
 using System.Collections.Generic;
@@ -151,14 +152,164 @@ namespace LibraryManagementSystem.Frontend.ViewModels
             }
         }
 
+        /// Book Properties for display
+
+        private bool _isPopupOpen;
+        private BitmapImage _popupImage;
+        private string _bookTitle;
+        private string _bookDescription;
+        private string _bookAuthor;
+        private string _bookISBN;
+        private string _bookGenre;
+        private int _bookQuantity;
+        private string _bookDeweyDecimalNumber;
+
+        public bool IsPopupOpen
+        {
+            get => _isPopupOpen;
+            set
+            {
+                if (_isPopupOpen != value)
+                {
+                    _isPopupOpen = value;
+                    OnPropertyChanged(nameof(IsPopupOpen));
+                }
+            }
+        }
+
+        public BitmapImage PopupImage
+        {
+            get => _popupImage;
+            set
+            {
+                if (_popupImage != value)
+                {
+                    _popupImage = value;
+                    OnPropertyChanged(nameof(PopupImage));
+                }
+            }
+        }
+
+        public string BookTitle
+        {
+            get => _bookTitle;
+            set
+            {
+                if( _bookTitle != value)
+                {
+                    _bookTitle = value;
+                    OnPropertyChanged(nameof(BookTitle));
+                }
+            }
+        }
+
+        public string BookDescription
+        {
+            get => _bookDescription;
+            set
+            {
+                if(_bookDescription != value)
+                {
+                    _bookDescription = value;
+                    OnPropertyChanged(nameof(BookDescription));
+                } 
+            }
+        }
+
+        public string BookAuthor
+        {
+            get => _bookAuthor;
+            set
+            {
+                if (_bookAuthor != value)
+                {
+                    _bookAuthor = value;
+                    OnPropertyChanged(nameof(BookAuthor));
+                }
+            }
+        }
+
+        public string BookISBN
+        {
+            get => _bookISBN;
+            set
+            {
+                if (_bookISBN != value)
+                {
+                    _bookISBN = value;
+                    OnPropertyChanged(nameof(BookISBN));
+                }
+            }
+        }
+
+        public string BookGenre
+        {
+            get => _bookGenre;
+            set
+            {
+                if ( _bookGenre != value)
+                {
+                    _bookGenre = value;
+                    OnPropertyChanged(nameof(BookGenre));
+                }
+            }
+        }
+
+        public int BookQuantity
+        {
+            get => _bookQuantity;
+            set
+            {
+                if ( _bookQuantity != value)
+                {
+                    _bookQuantity = value;
+                    OnPropertyChanged(nameof(BookQuantity));
+                }
+            }
+        }
+
+        public string BookDeweyDecimalNumber
+        {
+            get => _bookDeweyDecimalNumber;
+            set
+            {
+                if (_bookDeweyDecimalNumber != value)
+                {
+                    _bookDeweyDecimalNumber = value;
+                    OnPropertyChanged(nameof(BookDeweyDecimalNumber));
+                }
+            }
+        }
+        ///
+
         public void ViewDetails(int bookId)
         {
-            // Implement the logic to view book details
+            Book book = this._allBooks.FirstOrDefault(b => b.ID == bookId);
+
+            PopupImage = book.Image;
+            BookTitle = book.Title;
+            BookDescription = book.Description;
+            BookAuthor = book.Author;
+            BookISBN = book.ISBN;
+            BookGenre = ((Genre)int.Parse(book.Genre)).ToString();
+            BookQuantity = book.Quantity;
+            BookDeweyDecimalNumber = book.DeweyDecimalNumber;
+            IsPopupOpen = true;
+        }
+
+        public void ClosePopup()
+        {
+            IsPopupOpen = false;
         }
 
         public void AddToCart(int bookId)
         {
-            // Implement the logic to add the book to the cart
+            if (MainWindow.CurrentUser == null || MainWindow.UserToken == null)
+            {
+                MessageBox.Show("You need to be logged in to do that!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

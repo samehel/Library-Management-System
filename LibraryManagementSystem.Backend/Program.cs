@@ -26,6 +26,8 @@ namespace LibraryManagementSystem.Backend
             builder.Services.AddScoped<IAuditService, AuditService>();
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IBackendService, BackendService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<ICartBookService, CartBookService>();
 
             builder.Services.AddControllers();
             builder.Services.AddSwaggerGen(c =>

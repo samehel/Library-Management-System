@@ -39,4 +39,16 @@ namespace LibraryManagementSystem.Backend.Services
     {
         void TerminateProcess();
     }
+
+    public interface ICartService
+    {
+        Task<Cart> AddBookToCart(int userID, int bookID);
+        Task<Cart> RemoveBookFromCart(int userID, int bookID);
+        Task<Cart> ClearCart(int userID);
+    }
+
+    public interface ICartBookService
+    {
+        Task<List<CartBook>> GetAllCartBooks();
+    }
 }
