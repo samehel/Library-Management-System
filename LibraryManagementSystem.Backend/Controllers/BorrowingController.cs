@@ -136,6 +136,14 @@ namespace LibraryManagementSystem.Backend.Controllers
                 if(borrowings == null || borrowings.Count == 0)
                     return NotFound();
 
+                await this._auditService.CreateAuditAsync(new Audit
+                {
+                    UserID = userID,
+                    ActionType = ActionType.BORROW_REQUESTS_USER_SPECIFIC_RETRIEVED.ToString(),
+                    Details = $"User with ID {userID} requested to view all their borrow history",
+                    isDeleted = false
+                });
+
                 return Ok(borrowings);
             }
             catch (Exception)
