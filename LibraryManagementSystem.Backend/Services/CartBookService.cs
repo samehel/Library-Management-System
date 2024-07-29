@@ -14,7 +14,7 @@ namespace LibraryManagementSystem.Backend.Services
             this._context = context;
         }
 
-        public async Task<List<CartBook>> GetAllCartBooks()
+        public async Task<List<CartBook>> GetAllCartBooksAsync()
         {
             return await this._context.CartBooks.ToListAsync();
         }

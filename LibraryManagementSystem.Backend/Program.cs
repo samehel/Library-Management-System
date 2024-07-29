@@ -28,6 +28,7 @@ namespace LibraryManagementSystem.Backend
             builder.Services.AddScoped<IBackendService, BackendService>();
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<ICartBookService, CartBookService>();
+            builder.Services.AddScoped<IBorrowingService, BorrowingService>();
 
             // Configure JSON serialization to handle circular references
             builder.Services.AddControllers()

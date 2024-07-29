@@ -13,7 +13,7 @@ namespace LibraryManagementSystem.Backend.Controllers
     {
         private readonly ICartService _cartService;
 
-        public CartController(ICartService cartService, ICartBookService cartBookService)
+        public CartController(ICartService cartService)
         {
             this._cartService = cartService;
         }
@@ -24,7 +24,7 @@ namespace LibraryManagementSystem.Backend.Controllers
         {
             try
             {
-                Cart cart = await this._cartService.AddBookToCart(cartDTO.userID!.Value, cartDTO.bookID!.Value);
+                Cart cart = await this._cartService.AddBookToCartAsync(cartDTO.userID!.Value, cartDTO.bookID!.Value);
                 return Ok(cart);
             } catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace LibraryManagementSystem.Backend.Controllers
         {
             try
             {
-                Cart cart = await this._cartService.RemoveBookFromCart(cartDTO.userID!.Value, cartDTO.bookID!.Value);
+                Cart cart = await this._cartService.RemoveBookFromCartAsync(cartDTO.userID!.Value, cartDTO.bookID!.Value);
                 return Ok(cart);
             }
             catch (Exception ex)
@@ -53,7 +53,7 @@ namespace LibraryManagementSystem.Backend.Controllers
         {
             try
             {
-                Cart cart = await this._cartService.ClearCart(cartDTO.userID!.Value);
+                Cart cart = await this._cartService.ClearCartAsync(cartDTO.userID!.Value);
                 return Ok(cart);
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace LibraryManagementSystem.Backend.Controllers
         {
             try
             {
-                var cart = await this._cartService.GetOrCreateCart(userID);
+                var cart = await this._cartService.GetOrCreateCartAsync(userID);
                 return Ok(cart);
             } catch (Exception ex)
             {

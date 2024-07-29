@@ -17,7 +17,6 @@
         ADD_BOOK,
         REMOVE_BOOK,
         WARN_USER,
-        BORROW_BOOK,
         RETURN_BOOK,
         LOGIN,
         LOGOUT,
@@ -28,7 +27,12 @@
         GET_BOOK,
         UPDATE_BOOK,
         CREATE_BOOK,
-        DELETE_BOOK
+        DELETE_BOOK,
+        BORROW_REQUEST_CREATED,
+        BORROW_REQUEST_UPDATED,
+        BORROW_REQUEST_RETRIEVED,
+        BORROW_REQUESTS_RETRIEVED,
+        BORROW_REQUESTS_USER_SPECIFIC_RETRIEVED
     }
 
     public enum Genre

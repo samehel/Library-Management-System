@@ -1,4 +1,6 @@
-﻿using LibraryManagementSystem.Backend.Models;
+﻿using LibraryManagementSystem.Backend.DTOs;
+using LibraryManagementSystem.Backend.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Backend.Services
 {
@@ -42,15 +44,25 @@ namespace LibraryManagementSystem.Backend.Services
 
     public interface ICartService
     {
-        Task<Cart> AddBookToCart(int userID, int bookID);
-        Task<Cart> RemoveBookFromCart(int userID, int bookID);
-        Task<Cart> ClearCart(int userID);
+        Task<Cart> AddBookToCartAsync(int userID, int bookID);
+        Task<Cart> RemoveBookFromCartAsync(int userID, int bookID);
+        Task<Cart> ClearCartAsync(int userID);
         Task<Cart> UpdateCartBookQuantityAsync(int userID, int bookID, int quantity);
-        Task<Cart> GetOrCreateCart(int userID);
+        Task<Cart> GetOrCreateCartAsync(int userID);
     }
 
     public interface ICartBookService
     {
-        Task<List<CartBook>> GetAllCartBooks();
+        Task<List<CartBook>> GetAllCartBooksAsync();
+    }
+
+    public interface IBorrowingService
+    {
+        Task<Borrowing?> CreateBorrowRequestAsync(Borrowing borrowing);
+        Task<Borrowing?> GetBorrowRequestAsync(int borrowID);
+        Task<Borrowing?> UpdateBorrowRequestAsync(int borrowID, bool? renewReturnDate, bool? applyLateFee, bool? returned);
+        Task<List<Borrowing>> GetAllBorrowRequestsAsync();
+        Task<List<Borrowing>> GetUserBorrowRequestsAsync(int userID);
+
     }
 }
