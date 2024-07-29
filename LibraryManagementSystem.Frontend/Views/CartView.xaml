@@ -88,9 +88,20 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+            
+            <TextBlock x:Name="CheckoutNoticeMessage" 
+                       Text="Once you click the checkout button, your books will be registered to your account for 7 days and you can renew them for another 7 days at anytime. Failing to renew your books will lead to a $5 fine." 
+                       Visibility="Collapsed" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="16" 
+                       Foreground="Gray"
+                       FontStyle="Italic"
+                       TextWrapping="Wrap"
+                       Margin="0,25,0,0"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <Button Content="Clear Basket" Click="ClearCart_Click" Margin="5" Style="{StaticResource BootstrapButton}"/>
-                <Button Content="Checkout" Margin="5" Style="{StaticResource BootstrapButton}"/>
+                <Button Content="Checkout" Margin="5" Style="{StaticResource BootstrapButton}" Click="Checkout_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

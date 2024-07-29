@@ -21,6 +21,7 @@ namespace LibraryManagementSystem.Frontend.Views
                 NotLoggedInMessage.Visibility = Visibility.Visible;
                 EmptyCartMessage.Visibility = Visibility.Collapsed;
                 CartItemsPanel.Visibility = Visibility.Collapsed;
+                CheckoutNoticeMessage.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -28,19 +29,36 @@ namespace LibraryManagementSystem.Frontend.Views
                 if (DataContext is CartViewModel viewModel)
                 {
                     await viewModel.LoadCart();
-                    Debug.WriteLine($"CartBooks count after LoadCart: {viewModel.CartBooks.Count}");
                     if (viewModel.CartBooks.Count == 0)
                     {
                         EmptyCartMessage.Visibility = Visibility.Visible;
                         CartItemsPanel.Visibility = Visibility.Collapsed;
+                        CheckoutNoticeMessage.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
                         EmptyCartMessage.Visibility = Visibility.Collapsed;
                         CartItemsPanel.Visibility = Visibility.Visible;
+                        CheckoutNoticeMessage.Visibility = Visibility.Visible;
                     }
                 }
             }
+        }
+
+        private void Checkout_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is CartViewModel viewModel)
+            {
+                if (viewModel.CartBooks.Count == 0)
+                {
+                    MessageBox.Show("You cannot checkout an empty cart!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
+            CheckoutView checkoutView = new CheckoutView();
+            this.Content = checkoutView;
+           
         }
 
         private void RemoveFromCart_Click(object sender, RoutedEventArgs e)

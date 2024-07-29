@@ -62,7 +62,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
             if (MainWindow.CurrentUser != null)
             {
                 var cart = await this._cartService.ClearCartAsync(MainWindow.CurrentUser.ID);
-                await LoadCart();  
+                await LoadCart();
             }
         }
 
