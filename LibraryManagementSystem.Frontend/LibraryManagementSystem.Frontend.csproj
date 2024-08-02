@@ -189,6 +189,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\BackendService.cs" />
     <Compile Include="Services\BookService.cs" />
+    <Compile Include="Services\BorrowingService.cs" />
     <Compile Include="Services\CartService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\TokenService.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\BooksViewModel.cs" />
     <Compile Include="ViewModels\CartViewModel.cs" />
+    <Compile Include="ViewModels\CheckoutViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AccountView.xaml.cs">

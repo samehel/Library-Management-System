@@ -45,7 +45,7 @@ namespace LibraryManagementSystem.Frontend.Views
             }
         }
 
-        private void Checkout_Click(object sender, RoutedEventArgs e)
+        private async void Checkout_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is CartViewModel viewModel)
             {
@@ -54,11 +54,11 @@ namespace LibraryManagementSystem.Frontend.Views
                     MessageBox.Show("You cannot checkout an empty cart!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-            }
 
-            CheckoutView checkoutView = new CheckoutView();
-            this.Content = checkoutView;
-           
+                bool status = await viewModel.Checkout();
+                CheckoutView checkoutView = new CheckoutView(status);
+                this.Content = checkoutView;
+            }
         }
 
         private void RemoveFromCart_Click(object sender, RoutedEventArgs e)

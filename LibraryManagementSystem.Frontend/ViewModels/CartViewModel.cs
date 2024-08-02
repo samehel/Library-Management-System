@@ -1,6 +1,8 @@
 ﻿using LibraryManagementSystem.Frontend.Models;
 using LibraryManagementSystem.Frontend.Services;
 using LibraryManagementSystem.Frontend.Views;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
     public class CartViewModel : INotifyPropertyChanged
     {
         private readonly CartService _cartService;
+        private readonly BorrowingService _borrowingService;
         public ObservableCollection<CartBook> _cartBooks { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -22,6 +25,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
         public CartViewModel()
         {
             _cartService = new CartService();
+            _borrowingService = new BorrowingService();
             CartBooks = new ObservableCollection<CartBook>();
         }
 
@@ -52,7 +56,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
         {
             if (MainWindow.CurrentUser != null)
             {
-                var cart = await this._cartService.RemoveFromCartAsync(MainWindow.CurrentUser.ID, bookId);
+                await this._cartService.RemoveFromCartAsync(MainWindow.CurrentUser.ID, bookId);
                 await LoadCart();  
             }
         }
@@ -61,7 +65,7 @@ namespace LibraryManagementSystem.Frontend.ViewModels
         {
             if (MainWindow.CurrentUser != null)
             {
-                var cart = await this._cartService.ClearCartAsync(MainWindow.CurrentUser.ID);
+                await this._cartService.ClearCartAsync(MainWindow.CurrentUser.ID);
                 await LoadCart();
             }
         }
@@ -93,6 +97,33 @@ namespace LibraryManagementSystem.Frontend.ViewModels
                     RemoveFromCart(bookId);
                 }
             }
+        }
+
+        public async Task<bool> Checkout()
+        {
+
+            List<Borrowing> borrowings = new List<Borrowing>();
+            foreach(CartBook cartBook in CartBooks)
+            {
+                borrowings.Add(new Borrowing
+                {
+                    UserID = MainWindow.CurrentUser.ID,
+                    BookID = cartBook.BookID,
+                    BorrowDate = DateTime.Now,
+                    ReturnDate = DateTime.Now.AddDays(7),
+                    RenewalCount = 0,
+                    LateFee = 0,
+                    Returned = false
+                });
+            }
+
+            List<Borrowing> borrowRequests = await this._borrowingService.CreateBorrowRequestsAsync(borrowings);
+
+            if (borrowRequests.Count != borrowings.Count)
+                return false;
+
+            ClearCart();
+            return true;
         }
     }
 }

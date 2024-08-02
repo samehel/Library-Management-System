@@ -21,6 +21,15 @@ namespace LibraryManagementSystem.Backend.Services
             return borrowing;
         }
 
+        public async Task<List<Borrowing>?> CreateBorrowRequestsAsync(List<Borrowing> borrowings)
+        {
+            foreach (Borrowing borrowing in borrowings)
+                this._context.Borrowing.Add(borrowing);
+
+            await this._context.SaveChangesAsync();
+            return borrowings;
+        }
+
         public async Task<List<Borrowing>> GetAllBorrowRequestsAsync()
         {
             return await this._context.Borrowing.ToListAsync();

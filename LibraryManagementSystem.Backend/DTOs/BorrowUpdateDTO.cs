@@ -2,8 +2,8 @@
 {
     public class BorrowUpdateDTO
     {
-        public bool? renewReturnDate { get; set; }
-        public bool? applyLateFee { get; set; }
+        public bool? RenewReturnDate { get; set; }
+        public bool? ApplyLateFee { get; set; }
         public bool? Returned { get; set; }
     }
 }

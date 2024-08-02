@@ -59,6 +59,7 @@ namespace LibraryManagementSystem.Backend.Services
     public interface IBorrowingService
     {
         Task<Borrowing?> CreateBorrowRequestAsync(Borrowing borrowing);
+        Task<List<Borrowing>?> CreateBorrowRequestsAsync(List<Borrowing> borrowings);
         Task<Borrowing?> GetBorrowRequestAsync(int borrowID);
         Task<Borrowing?> UpdateBorrowRequestAsync(int borrowID, bool? renewReturnDate, bool? applyLateFee, bool? returned);
         Task<List<Borrowing>> GetAllBorrowRequestsAsync();

@@ -3,10 +3,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LibraryManagementSystem.Frontend.Views"
+             xmlns:local="clr-namespace:LibraryManagementSystem.Frontend.Views" 
+             xmlns:vm="clr-namespace:LibraryManagementSystem.Frontend.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:CheckoutViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style x:Key="BootstrapButton" TargetType="Button">
+            <Setter Property="Background" Value="#007bff"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#007bff"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                            <!-- Added CornerRadius -->
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
-            
+        <TextBlock x:Name="BorrowRequestSuccess" Text="You have successfully checked out your books" Visibility="Collapsed" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Green" Margin="0,0,0,20"/>
+        <TextBlock x:Name="BorrowRequestFailure" Text="Failed to checkout books" Visibility="Collapsed" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Red"/>
+        <Button Content="Go Home" Click="GoHome_Click" Style="{StaticResource BootstrapButton}"/>
     </Grid>
 </UserControl>

@@ -21,7 +21,7 @@ namespace LibraryManagementSystem.Backend.Controllers
             this._auditService = auditService;
         }
 
-        [HttpPost]
+        [HttpPost("CreateRequest")]
         [Authorize(Roles = "Admin, Member")]
         public async Task<ActionResult<Borrowing>> CreateBorrowRequest(Borrowing borrowing)
         {
@@ -44,6 +44,40 @@ namespace LibraryManagementSystem.Backend.Controllers
             } catch (Exception)
             {
                 throw new Exception("Failed to create a new borrow request");
+            }
+        }
+
+        [HttpPost("CreateRequests")]
+        [Authorize(Roles = "Admin, Member")]
+        public async Task<ActionResult<List<Borrowing>>> CreateBorrowRequests(List<Borrowing> borrowings)
+        {
+            try
+            {
+                List<Borrowing>? borrowed = await this._borrowingService.CreateBorrowRequestsAsync(borrowings);
+
+                if (borrowed == null)
+                    return BadRequest();
+
+                string bookIDs = string.Empty;
+                foreach (var borrowing in borrowed)
+                    if (borrowing != borrowed[borrowed.Count - 1])
+                        bookIDs += borrowing.ID + ", ";
+                    else
+                        bookIDs += borrowing.ID;
+
+                await this._auditService.CreateAuditAsync(new Audit
+                {
+                    UserID = borrowed[0].UserID,
+                    ActionType = ActionType.BORROW_REQUEST_CREATED.ToString(),
+                    Details = $"User with ID {borrowed[0].UserID} has borrowed books with IDs {bookIDs}",
+                    isDeleted = false
+                });
+
+                return Ok(borrowed);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Failed to create a new borrow requests");
             }
         }
 
@@ -105,7 +139,7 @@ namespace LibraryManagementSystem.Backend.Controllers
         {
             try
             {
-                Borrowing? borrowing = await this._borrowingService.UpdateBorrowRequestAsync(borrowID, borrowUpdateDTO.renewReturnDate, borrowUpdateDTO.applyLateFee, borrowUpdateDTO.Returned);
+                Borrowing? borrowing = await this._borrowingService.UpdateBorrowRequestAsync(borrowID, borrowUpdateDTO.RenewReturnDate, borrowUpdateDTO.ApplyLateFee, borrowUpdateDTO.Returned);
             
                 if(borrowing == null)
                     return NotFound();
